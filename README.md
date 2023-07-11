@@ -2,7 +2,7 @@
 
 This application allows you to explore and experiment with different AI services. It leverages the power of openAI, Google Cloud, and AWS to perform translation, summarization, and text-to-speech tasks.
 
-Feel free to explore the various features and functionalities of the application, which serve as an excellent example of utilizing openAI, Google Cloud, and AWS services within a Next.js 13 app.
+Feel free to explore the various features and functionalities of the application, which serve as an excellent example of utilizing <b>openAI, Google Cloud, and AWS services within a Next.js 13 app</b>.
 
 ## Getting Started
 
@@ -28,7 +28,13 @@ Before using the AI services, you will need to obtain your own credentials for e
 - AWS Polly
 
 ### OpenAI
-To obtain the OpenAI API key, follow the instructions provided at [OpenAI API Keys](https://openai.com/docs/authentication/) (you need to login to openai.com to use this link). Once you have the key, add it to your `.env` file using the following format:
+To obtain the OpenAI API key, follow these instructions:
+
+1. Login to [OpenAI](https://openai.com).
+2. Choose the API option.
+3. In the top right corner, open the user's menu and select "View API keys".
+4. Click on "Create new secret key".
+5. Once you have the key, add it to your `.env` file using the following format:
 
 ```
 OPENAI_API_KEY=*****
@@ -40,6 +46,7 @@ To acquire the key file for Google Cloud Text-to-Speech, refer to the guide on [
 GOOGLE_APPLICATION_CREDENTIALS="D:\My_dir_with_keys\keys\ai*****.json"
 ```
 
+### AWS Polly
 To use AWS Polly, you will need to obtain the following credentials:
 
 - accessKeyId
@@ -65,4 +72,4 @@ Once you have the accessKeyId, secretAccessKey, and region, create a folder and 
 
 Now you're all set to enjoy playing around with the AI services!
 
-##Enjoy your AI playground experience!
+## Enjoy your AI playground experience!
