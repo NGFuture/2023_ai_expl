@@ -1,24 +1,69 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# AI Playground Application
+
+This application allows you to explore and experiment with different AI services. It leverages the power of openAI, Google Cloud, and AWS to perform translation, summarization, and text-to-speech tasks.
+
+Feel free to explore the various features and functionalities of the application, which serve as an excellent example of utilizing openAI, Google Cloud, and AWS services within a Next.js 13 app.
 
 ## Getting Started
 
-First, run the development server:
+To get started, follow these steps:
 
+1. Clone the repository and navigate to the project directory.
+
+2. Install the dependencies by running the following command:
+```bash
+npm install
+```
+3. Run the development server:
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
+```
+4. Open http://localhost:3000 in your browser to see the application in action.
+
+## Credentials
+Before using the AI services, you will need to obtain your own credentials for each of the following:
+
+- openAI
+- Google Cloud Text-to-Speech
+- AWS Polly
+
+### OpenAI
+To obtain the OpenAI API key, follow the instructions provided at [OpenAI API Keys](https://openai.com/docs/authentication/). Once you have the key, add it to your `.env` file using the following format:
+
+```
+OPENAI_API_KEY=*****
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+To acquire the key file for Google Cloud Text-to-Speech, refer to the guide on [Creating a new service account](https://cloud.google.com/docs/authentication/getting-started#create-service-account). Download the key file and specify its path in your `.env` file as shown below:
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+```
+GOOGLE_APPLICATION_CREDENTIALS="D:\My_dir_with_keys\keys\ai*****.json"
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+To use AWS Polly, you will need to obtain the following credentials:
 
+- accessKeyId
+- secretAccessKey
+- region
 
-## Google speech-to-text
-You will need to put to .env file the path to the key.
-To get key follow instructions: https://cloud.google.com/text-to-speech/docs/before-you-begin#creating_a_new_service_account
+For a step-by-step guide, you can watch the helpful video tutorial [here](https://www.youtube.com/watch?v=Oru_j1cNQXA). However, please make the following adjustments during the setup process:
+
+- When creating a user (step 2), choose the policy "AmazonPollyFullAccess".
+- When generating access keys in the security credentials tab, choose "Third-party service".
+
+Once you have the accessKeyId, secretAccessKey, and region, create a folder and a file at src/config/aws.json with the following content:
+
+json
+Copy code
+{
+  "credentials": {
+    "accessKeyId": "********",
+    "secretAccessKey": "********"
+  },
+  "region": "us-east-1"
+}
+Now you're all set to enjoy playing around with the AI services!
+
+Feel free to explore the various features and functionalities of the application, which serve as an excellent example of utilizing openAI, Google Cloud, and AWS services within a Next.js 13 app.
+
+Enjoy your AI playground experience!
