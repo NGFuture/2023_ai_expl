@@ -28,12 +28,12 @@ Before using the AI services, you will need to obtain your own credentials for e
 - AWS Polly
 
 ### OpenAI
-To obtain the OpenAI API key, follow the instructions provided at [OpenAI API Keys](https://openai.com/docs/authentication/). Once you have the key, add it to your `.env` file using the following format:
+To obtain the OpenAI API key, follow the instructions provided at [OpenAI API Keys](https://openai.com/docs/authentication/) (you need to login to openai.com to use this link). Once you have the key, add it to your `.env` file using the following format:
 
 ```
 OPENAI_API_KEY=*****
 ```
-
+### Google Cloud Text-to-Speech
 To acquire the key file for Google Cloud Text-to-Speech, refer to the guide on [Creating a new service account](https://cloud.google.com/docs/authentication/getting-started#create-service-account). Download the key file and specify its path in your `.env` file as shown below:
 
 ```
@@ -46,15 +46,14 @@ To use AWS Polly, you will need to obtain the following credentials:
 - secretAccessKey
 - region
 
-For a step-by-step guide, you can watch the helpful video tutorial [here](https://www.youtube.com/watch?v=Oru_j1cNQXA). However, please make the following adjustments during the setup process:
+For a step-by-step guide, you can watch the helpful video tutorial [here](https://youtu.be/HuE-QhrmE1c). However, please make the following adjustments during the setup process:
 
 - When creating a user (step 2), choose the policy "AmazonPollyFullAccess".
 - When generating access keys in the security credentials tab, choose "Third-party service".
 
 Once you have the accessKeyId, secretAccessKey, and region, create a folder and a file at src/config/aws.json with the following content:
 
-json
-Copy code
+```
 {
   "credentials": {
     "accessKeyId": "********",
@@ -62,8 +61,8 @@ Copy code
   },
   "region": "us-east-1"
 }
+```
+
 Now you're all set to enjoy playing around with the AI services!
 
-Feel free to explore the various features and functionalities of the application, which serve as an excellent example of utilizing openAI, Google Cloud, and AWS services within a Next.js 13 app.
-
-Enjoy your AI playground experience!
+##Enjoy your AI playground experience!
