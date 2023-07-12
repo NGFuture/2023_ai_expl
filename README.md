@@ -4,6 +4,10 @@ This application allows you to explore and experiment with different AI services
 
 Feel free to explore the various features and functionalities of the application, which serve as an excellent example of utilizing <b>openAI, Google Cloud, and AWS services within a Next.js 13 app</b>.
 
+<p align="center">
+  <img src="./public/images/20230712-AI-expl-image.jpg" alt="AI Playground Application">
+</p>
+
 ## Getting Started
 
 To get started, follow these steps:
