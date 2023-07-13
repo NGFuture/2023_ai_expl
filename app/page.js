@@ -1,10 +1,9 @@
 "use client"; // This is a client component
 
-import React, { useEffect, useState } from 'react';
-import { PlayIcon } from '@heroicons/react/24/solid';
+import React, { useState } from 'react';
+import { PauseIcon, PlayIcon } from '@heroicons/react/24/solid';
 import Skeleton from 'react-loading-skeleton';
-
-
+import "react-loading-skeleton/dist/skeleton.css";
 
 export default function Home() {
   // for translation
@@ -13,8 +12,11 @@ export default function Home() {
   const [isLoadingTranslation, setIsLoadingTranslation] = useState(false);
   // for text-to-speech
   const [textEng, setTextEng] = useState('');
-  const [audioGoogle, setAudioGoogle] = useState('');
-  const [audioAWS, setAudioAWS] = useState('');
+  // we save Audio object separate for Google and AWS
+  const [audioGoogle, setAudioGoogle] = useState(null);
+  const [audioAWS, setAudioAWS] = useState(null);
+  // state for play/stop
+  const [audioPlaying, setAudioPlaying] = useState(null);
 
   // Function to send Russian text to openAI API for translation and summarization
   const handleRusTextSubmit = async () => {
@@ -42,7 +44,7 @@ export default function Home() {
       body: JSON.stringify({ text: textEng })
     })
     const data = await respone.json();
-    setAudioGoogle('/audio/output-google.mp3');
+    setAudioGoogle(new Audio('/audio/output-google.mp3?v=' + Date.now()));
   }
 
   // function to send English text to AWS API for text to speech
@@ -58,40 +60,31 @@ export default function Home() {
       throw new Error('Network response was not ok');
     }
     const data = await respone.json();
-    setAudioAWS('/audio/output-aws.mp3');
+    setAudioAWS(new Audio('/audio/output-aws.mp3?v=' + Date.now()));
   }
 
-  // useEffect to play Google audio when play button is clicked
-  useEffect(() => {
-    const handlePlayGoogleAudio = () => {
-      const audio = new Audio(audioGoogle);
-      console.log(audioGoogle);
-      audio.play();
-    };
+  // function toggle play/stop 
+  const handlePlayStop = (sourceType) => {
+    if (!audioPlaying) {
+      // if no audio is playing, play the audio of the sourceType
+      setAudioPlaying(sourceType);
+      sourceType === 'google' ? audioGoogle.play() : audioAWS.play();
+    }
+    else if (audioPlaying === sourceType) {
+      setAudioPlaying(null);
+      sourceType === 'google' ? audioGoogle.pause() : audioAWS.pause();
+    } else {
+      setAudioPlaying(sourceType);
+      if (sourceType === 'google') {
+        audioGoogle.play();
+        audioAWS.pause();
+      } else {
+        audioAWS.play();
+        audioGoogle.pause();
+      }
+    }
+  }
 
-    const playButton = document.querySelector('.play-button-google');
-    playButton.addEventListener('click', handlePlayGoogleAudio);
-
-    return () => {
-      playButton.removeEventListener('click', handlePlayGoogleAudio);
-    };
-  }, [audioGoogle]);
-
-
-  // useEffect to play AWS audio when play button is clicked
-  useEffect(() => {
-    const handlePlayAWSAudio = () => {
-      const audio = new Audio(audioAWS);
-      audio.play();
-    };
-
-    const playButton = document.querySelector('.play-button-aws');
-    playButton.addEventListener('click', handlePlayAWSAudio);
-
-    return () => {
-      playButton.removeEventListener('click', handlePlayAWSAudio);
-    };
-  }, [audioAWS]);
 
 
   return (
@@ -129,17 +122,16 @@ export default function Home() {
             <div className="flex-1 h-10 px-4  text-base text-left font-bold text-gray-700 placeholder-gray-600 focus:shadow-outline">
               Summarized translation (by openAI):
             </div>
-            {isLoadingTranslation &&
+            {isLoadingTranslation ?
               <>
-                {/* <div className="flex-1 h-10 px-4  text-base text-left text-gray-700 placeholder-gray-600 focus:shadow-outline">
-                  Loading...
-                </div> */}
                 <Skeleton count={2} />
               </>
+              :
+              <div className="flex-1 h-10 px-4 italic text-base text-gray-700 placeholder-gray-600 focus:shadow-outline">
+                {textTranstatedToEnglish}
+              </div>
+
             }
-            <div className="flex-1 h-10 px-4 italic text-base text-gray-700 placeholder-gray-600 focus:shadow-outline">
-              {textTranstatedToEnglish}
-            </div>
           </div>
 
 
@@ -166,45 +158,42 @@ export default function Home() {
             </button>
           </div>
 
-          {/* experementing with 2 colums style */}
-          {/* <div className="container flex items-center justify-center w-full h-full mt-4 relative flex flex-col lg:flex-row " >
-            <div className="card-container bg-white rounded-xl shadow-lg dark:bg-neutral-800">
-              <div className="card flex-1 h-10 px-4  text-base text-gray-700 placeholder-gray-600 focus:shadow-outline pt-2 ">
-                <p>Output by Google Cloud API</p>
-              </div>
-              <div className="play-button-aws flex items-center justify-center w-1/6 h-10 ml-4 text-gray-100 bg-gray-800 rounded-lg hover:bg-gray-700 focus:outline-none focus:shadow-outline">
-                <PlayIcon className="h-6 w-6 text-gray-100" />
-              </div>
-            </div>
-
-            <div className="card-container bg-white rounded-xl shadow-lg dark:bg-neutral-800">
-              <div className="card flex-1 h-10 px-4  text-base text-gray-700 placeholder-gray-600 focus:shadow-outline pt-2">
-                <p>Output by AWS API</p>
-              </div>
-              <div className="play-button-aws flex items-center justify-center w-1/6 h-10 ml-4 text-gray-100 bg-gray-800 rounded-lg hover:bg-gray-700 focus:outline-none focus:shadow-outline">
-                <PlayIcon className="h-6 w-6 text-gray-100" />
-              </div>
-            </div>
-          </div> */}
-
-
-
           <div className="flex items-center justify-center w-full h-full mt-4">
             <div className="flex-1 h-10 px-4  text-base text-gray-700 placeholder-gray-600 focus:shadow-outline pt-2">
               <p>Google text-to-speech output</p>
             </div>
-            <div className="play-button-google flex items-center justify-center w-1/6 h-10 ml-4 text-gray-100 bg-gray-800 rounded-lg hover:bg-gray-700 focus:outline-none focus:shadow-outline">
-              <PlayIcon className="h-6 w-6 text-gray-100" />
-            </div>
+            {audioGoogle ?
+              <button className="flex items-center justify-center w-1/6 h-10 ml-4 text-gray-100 bg-gray-800 rounded-lg hover:bg-gray-700 focus:outline-none focus:shadow-outline" onClick={(e) => handlePlayStop("google")}>
+                {audioPlaying === "google" ?
+                  <PauseIcon className="h-6 w-6 text-gray-100" />
+                  :
+                  <PlayIcon className="h-6 w-6 text-gray-100" />
+                }
+              </button>
+              :
+              <button className="flex items-center justify-center w-1/6 h-10 ml-4 text-gray-100 bg-gray-400 rounded-lg focus:outline-none focus:shadow-outline" disabled>
+                <PlayIcon className="h-6 w-6 text-gray-100" />
+              </button>
+            }
 
           </div>
           <div className="flex items-center justify-center w-full h-full mt-4">
             <div className="flex-1 h-10 px-4  text-base text-gray-700 placeholder-gray-600 focus:shadow-outline pt-2">
               <p>AWS text-to-speech Polly output</p>
             </div>
-            <div className="play-button-aws flex items-center justify-center w-1/6 h-10 ml-4 text-gray-100 bg-gray-800 rounded-lg hover:bg-gray-700 focus:outline-none focus:shadow-outline">
-              <PlayIcon className="h-6 w-6 text-gray-100" />
-            </div>
+            {audioGoogle ?
+              <button className="flex items-center justify-center w-1/6 h-10 ml-4 text-gray-100 bg-gray-800 rounded-lg hover:bg-gray-700 focus:outline-none focus:shadow-outline" onClick={(e) => handlePlayStop("aws")}>
+                {audioPlaying === "aws" ?
+                  <PauseIcon className="h-6 w-6 text-gray-100" />
+                  :
+                  <PlayIcon className="h-6 w-6 text-gray-100" />
+                }
+              </button>
+              :
+              <button className="flex items-center justify-center w-1/6 h-10 ml-4 text-gray-100 bg-gray-400 rounded-lg focus:outline-none focus:shadow-outline" disabled>
+                <PlayIcon className="h-6 w-6 text-gray-100" />
+              </button>
+            }
           </div>
 
 
