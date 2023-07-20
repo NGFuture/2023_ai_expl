@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { PauseIcon, PlayIcon } from '@heroicons/react/24/solid';
 import Skeleton from 'react-loading-skeleton';
 import "react-loading-skeleton/dist/skeleton.css";
+import AudioButton from './_components/AudioButton';
 
 export default function Home() {
   // for translation
@@ -158,46 +159,17 @@ export default function Home() {
             </button>
           </div>
 
-          <div className="flex items-center justify-center w-full h-full mt-4">
-            <div className="flex-1 h-10 px-4  text-base text-gray-700 placeholder-gray-600 focus:shadow-outline pt-2">
-              <p>Google text-to-speech output</p>
+          <div className="cards flex flex-col justify-center w-full h-full mt-4 md:flex-row gap-4">
+
+            <div className="card flex flex-col items-center justify-center w-full h-full p-8 bg-white rounded-xl shadow-lg">
+              <AudioButton sourceTitle="Google" audioFileCreated={audioGoogle} isPlaying={audioPlaying === "google"} handlePlayStop={() => handlePlayStop("google")} />
             </div>
-            {audioGoogle ?
-              <button className="flex items-center justify-center w-1/6 h-10 ml-4 text-gray-100 bg-gray-800 rounded-lg hover:bg-gray-700 focus:outline-none focus:shadow-outline" onClick={(e) => handlePlayStop("google")}>
-                {audioPlaying === "google" ?
-                  <PauseIcon className="h-6 w-6 text-gray-100" />
-                  :
-                  <PlayIcon className="h-6 w-6 text-gray-100" />
-                }
-              </button>
-              :
-              <button className="flex items-center justify-center w-1/6 h-10 ml-4 text-gray-100 bg-gray-400 rounded-lg focus:outline-none focus:shadow-outline" disabled>
-                <PlayIcon className="h-6 w-6 text-gray-100" />
-              </button>
-            }
+
+            <div className="card flex flex-col items-center justify-center w-full h-full p-8 bg-white rounded-xl shadow-lg">
+              <AudioButton sourceTitle="AWS" audioFileCreated={audioAWS} isPlaying={audioPlaying === "aws"} handlePlayStop={() => handlePlayStop("aws")} />
+            </div>
 
           </div>
-          <div className="flex items-center justify-center w-full h-full mt-4">
-            <div className="flex-1 h-10 px-4  text-base text-gray-700 placeholder-gray-600 focus:shadow-outline pt-2">
-              <p>AWS text-to-speech Polly output</p>
-            </div>
-            {audioGoogle ?
-              <button className="flex items-center justify-center w-1/6 h-10 ml-4 text-gray-100 bg-gray-800 rounded-lg hover:bg-gray-700 focus:outline-none focus:shadow-outline" onClick={(e) => handlePlayStop("aws")}>
-                {audioPlaying === "aws" ?
-                  <PauseIcon className="h-6 w-6 text-gray-100" />
-                  :
-                  <PlayIcon className="h-6 w-6 text-gray-100" />
-                }
-              </button>
-              :
-              <button className="flex items-center justify-center w-1/6 h-10 ml-4 text-gray-100 bg-gray-400 rounded-lg focus:outline-none focus:shadow-outline" disabled>
-                <PlayIcon className="h-6 w-6 text-gray-100" />
-              </button>
-            }
-          </div>
-
-
-
 
         </div>
       </div>

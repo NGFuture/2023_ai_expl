@@ -48,16 +48,17 @@ export async function POST(req) {
 
         audioStream.on("error", (error) => {
             // Handle any errors that occur during the audio stream
-            reject(error);
+            console.error("Error getting audio file from AWS:", error);
+            reject(NextResponse.error());
         });
 
         writeStream.on("finish", () => {
             console.log("Audio content written to file: output-aws.mp3");
-            resolve(NextResponse.json({ name: "John Doe" }));
+            resolve(NextResponse.json({ sucess: true }));
         });
 
         writeStream.on("error", (error) => {
-            console.error("Error writing audio file:", error);
+            console.error("Error writing audio AWS file:", error);
             reject(NextResponse.error());
         });
     });
