@@ -5,6 +5,7 @@ import { PauseIcon, PlayIcon } from '@heroicons/react/24/solid';
 import Skeleton from 'react-loading-skeleton';
 import "react-loading-skeleton/dist/skeleton.css";
 import AudioButton from './_components/AudioButton';
+import VoiceRecorder from './_components/VoiceRecorder';
 
 export default function Home() {
   // for translation
@@ -37,7 +38,7 @@ export default function Home() {
 
   // function to send English text to Google API for text to speech
   const handleEngTextSubmitGoogle = async () => {
-    const respone = await fetch('/api/speech/google', {
+    const respone = await fetch('/api/speech/google?mode=TTS', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -167,6 +168,9 @@ export default function Home() {
 
             <div className="card flex flex-col items-center justify-center w-full h-full p-8 bg-white rounded-xl shadow-lg">
               <AudioButton sourceTitle="AWS" audioFileCreated={audioAWS} isPlaying={audioPlaying === "aws"} handlePlayStop={() => handlePlayStop("aws")} />
+            </div>
+            <div>
+            <VoiceRecorder/>
             </div>
 
           </div>

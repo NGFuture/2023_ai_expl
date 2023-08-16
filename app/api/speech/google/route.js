@@ -3,9 +3,12 @@ import { SpeechClient } from '@google-cloud/speech';
 import path from "path";
 const targetFile = path.join(process.cwd(), "public/audio/output-google.mp3");
 
-
 // Set up Google Cloud Speech-to-Text client
 const speechClient = new SpeechClient();
+const textToSpeech = require('@google-cloud/text-to-speech');
+const fs = require('fs');
+const util = require('util');
+const client = new textToSpeech.TextToSpeechClient();
 
 
 export async function POST(req) {
@@ -15,13 +18,6 @@ export async function POST(req) {
   if (mode) {
     if (mode === 'TTS') {
       try {
-
-        const textToSpeech = require('@google-cloud/text-to-speech');
-        const fs = require('fs');
-        const util = require('util');
-        const client = new textToSpeech.TextToSpeechClient();
-        // extracting text from request
-        const body = await req.json();
         const text = body.text;
     
         const request = {
@@ -44,22 +40,23 @@ export async function POST(req) {
     } else {
       const request = {
         audio: {
-          content: audioContent.toString('base64'),
+          content: body.text
         },
         config: {
-          encoding: 'LINEAR16',
-          sampleRateHertz: 16000,
+          encoding: 'MP3',
           languageCode: 'en-US',
+          sampleRateHertz: 48000
         },
       };
 
       try {
         const [response] = await speechClient.recognize(request);
+        console.log(response)
         const transcription = response.results
           .map(result => result.alternatives[0].transcript)
           .join('\n');
         console.log('Transcription:', transcription);
-        return NextResponse.json({ success: true });
+        return NextResponse.json({ success: true, data: transcription });
       } catch (err) {
         console.error('Error transcribing:', err);
         return NextResponse.error(new Error('Something went wrong on Google API'));
