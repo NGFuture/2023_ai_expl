@@ -5,6 +5,7 @@ import { PauseIcon, PlayIcon } from '@heroicons/react/24/solid';
 import Skeleton from 'react-loading-skeleton';
 import "react-loading-skeleton/dist/skeleton.css";
 import AudioButton from './_components/AudioButton';
+import RecordButton from './_components/RecordButton';
 
 export default function Home() {
   // for translation
@@ -173,6 +174,20 @@ export default function Home() {
 
         </div>
       </div>
+
+      <div className="py-5 relative flex flex-col items-center justify-center w-full max-w-5xl h-full px-4 mx-auto mt-24 lg:mt-0 lg:px-0 lg:flex-row">
+        <div className='card flex flex-col items-center justify-center w-full h-full p-8 bg-white rounded-xl shadow-lg dark:bg-neutral-800'>
+          <h2 className="mb-4 text-2xl font-semibold text-center text-gray-800 dark:text-gray-100">
+            Live Speech to Text with AWS Transcribe
+          </h2>
+
+          <RecordButton/>
+
+
+        </div>
+      </div>
+
+
 
 
 
