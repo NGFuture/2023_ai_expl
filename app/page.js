@@ -169,12 +169,17 @@ export default function Home() {
             <div className="card flex flex-col items-center justify-center w-full h-full p-8 bg-white rounded-xl shadow-lg">
               <AudioButton sourceTitle="AWS" audioFileCreated={audioAWS} isPlaying={audioPlaying === "aws"} handlePlayStop={() => handlePlayStop("aws")} />
             </div>
-            <div>
-            <VoiceRecorder/>
-            </div>
-
           </div>
+          
+          <hr className="my-4 border-gray-300 dark:border-neutral-700" />
 
+          <h3 className="mb-4 text-1xl font-semibold text-left text-gray-800 dark:text-gray-100">
+            Speech to text options.
+          </h3>
+          
+          <div>
+            <VoiceRecorder/>
+          </div>
         </div>
       </div>
 

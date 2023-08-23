@@ -49,13 +49,13 @@ const VoiceRecorder = () => {
     }
 
     return (
-        <>
-            <button onClick={start}>Start</button>
+        <div>
+            <button onClick={start}>Start</button><br></br>
             <button onClick={stop}>Stop</button>
             {
                 transcription ? <div>{transcription}</div> : null
             }
-        </>
+        </div>
     )
 };
 
